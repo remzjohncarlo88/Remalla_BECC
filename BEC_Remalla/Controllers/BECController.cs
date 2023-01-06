@@ -5,6 +5,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 
 namespace BEC_Remalla.Controllers
 {
@@ -69,7 +70,8 @@ namespace BEC_Remalla.Controllers
         public string GetCityByIPAddress()
         {
             string hostName = Dns.GetHostName();
-            string city = _repository.LocationRepo.GetCity(Dns.GetHostByName(hostName).AddressList[2].ToString());
+            string IP = Dns.GetHostByName(hostName).AddressList.Where(c => c.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).FirstOrDefault().ToString();
+            string city = _repository.LocationRepo.GetCity(IP); 
 
             return city;
         }
